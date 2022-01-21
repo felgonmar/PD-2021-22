@@ -4,7 +4,7 @@ module EnfriamientoSim
 )where
 
 import System.Random
-
+import SolEnfriamientoSim
 
 
 --Calculo de la poblacion inicial
@@ -55,7 +55,7 @@ vecinos xs = do
 --el objeto seleccionado debe añadirse a vecinos y a fuera de objetos de compra
 vecinosAux :: [a]->[a]->[a]
 vecinosAux elegidos lista = (lista !! indice): elegidos
-          where indice = randomIndice lista
+          where let indice = randomIndice lista
 
 
 
