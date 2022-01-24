@@ -32,11 +32,11 @@ mutaAux:: [Int] -> [Int]
 mutaAux xs 
             | (sum xs) == 1 = []
             | (sum xs) == 0 = []
- 
+ -- No completado
 
 fitness:: [Int] -> Int
 fitness xs 
     | r < 45 = r
     | otherwise = 9283489
     where r = sum xs
-
+-- si hay 2 en una fila, penaliza mucho, si hay coincidencia de reinas, no tanto
