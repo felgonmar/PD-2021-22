@@ -13,8 +13,24 @@ funcionMoch = do
     let nEnf = read enfriamiento :: Int
     let nIte = read iteracion :: Int
     return ()
-    {-solucion <- algoritmoParaSolucionar: p g t f cr 4
-    let final = nuevaSolucionCF6 solucion
-    let last_gen = selecciona_evaluaciones_de_generacionCF6 (length (solucion)) final
-    siguiente_accion_cf6 last_gen
-    return ()-}
+
+funcionGenetico :: IO ()
+funcionGenetico = do 
+    putStrLn "\nFuncion Algoritmo genetico seleccionado"
+    putStrLn "\n indique el numero de reinas"
+    reinas <- getLine
+    let n = read reinas :: Int
+    return ()
+
+main :: IO ()
+main = do 
+    putStrLn "\n Seleccione el problema que desea resolver: "
+    putStrLn "\t1. Problema mochila"
+    putStrLn "\t2. N reinas"
+    putStrLn "\t3 Salir"
+    putStr "\nEscriba el número asociado a la selección: "
+    o <- getLine
+    case o of "1" -> funcionMoch
+              "2" -> funcionGenetico
+              "3" -> return ()
+              _ -> putStrLn "\nSeleccione un problema"
