@@ -13,8 +13,4 @@ funcionMoch = do
     let nEnf = read enfriamiento :: Int
     let nIte = read iteracion :: Int
     return ()
-    {-solucion <- algoritmoParaSolucionar: p g t f cr 4
-    let final = nuevaSolucionCF6 solucion
-    let last_gen = selecciona_evaluaciones_de_generacionCF6 (length (solucion)) final
-    siguiente_accion_cf6 last_gen
-    return ()-}
+    

@@ -32,10 +32,17 @@ sacar_valor (_,y,_) = y
 sacar_peso :: (a,b,c) -> c
 sacar_peso (_,_,z) = z
 
-caben_objetos :: Int->Int->Bool
-caben_objetos pesoMoch pesoObjeto = (pesoMoch > pesoObjeto)
-
-
+caben_objetos::Int ->[Objeto]->Bool
+caben_objetos pesoMoch [] = False
+caben_objetos pesoMoch lista 
+    | pesoMoch < pesoObjeto = caben_objetos pesoMoch (tail lista)
+    | pesoMoch > pesoObjeto = True
+    where pesoObjeto = sacar_peso' objeto
+          objeto = head lista
+cabe_objeto::Int->Objeto->Bool
+cabe_objeto pesoMoch objeto
+    |pesoMoch < sacar_peso' objeto = False
+    |pesoMoch> sacar_peso' objeto = True   
 sacar_valor' :: Objeto -> Int
 sacar_valor' (_,y,_) = y
 sacar_peso' :: Objeto -> Int

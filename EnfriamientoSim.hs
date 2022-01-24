@@ -2,23 +2,9 @@ module EnfriamientoSim
 (
 
 )where
-
+import Data.List
 import System.Random
 import SolEnfriamientoSim
-
-
---Calculo de la poblacion inicial
-{-
-Al tomar varios elementos 
--}
-{-generaPoblacion :: Int -> IO [(Double,Double)]
-generaPoblacion n = do
-  --El newStdGen es un generador de numeros aleatorios
-  gen <- newStdGen   
-  let xs = randomRs () gen
-  return ()  -}
-    --necesitamos el return con las monadas
-  
 
 --Funcion sorteo
 --Funcion experimento
@@ -35,27 +21,43 @@ generaPoblacion n = do
 --      FUNCIONES AUXILIARES
 -- ===================================
 -- le pasaremos la lista de objetos de la compra
-vecinos :: [a] -> IO [a]
-vecinos xs = do
+vecinos :: Int->[Objeto] -> IO [Objeto]
+vecinos pesoMoch[] = error "lista vacia"
+vecinos pesoMoch xs = do
   --la lista de vecinos vendra dada por vecinosAux
     let vecinoInicial = []
     let listaInicial = xs 
-    let vecinoFinal = vecinosAux vecinoInicial listaInicial
-    -- si la lista no supera el limite del peso de la mochila buscar otro objeto 
-    --(hasta un maximo del numero de indices que queden en la lista para evitar un bucle infinito)
-    
-    --de la lista ire extrayendo indices aleatorios. se añadiran a elegidos y se tendran que quitar de lista
-    --debo sacar de lista el ultimo elemento añadido a vecinoFinal
-    --extraigo el objeto i de la lista y se la añado a elegidos
-    
-    let lista = delete (head vecinoFinal) listaInicial
-    return elegidos
+ 
+    return xs
 
 --Pasaremos la lista de vecinos y la lista de objetos de compra, al final de la iteracion 
 --el objeto seleccionado debe añadirse a vecinos y a fuera de objetos de compra
-vecinosAux :: [a]->[a]->[a]
-vecinosAux elegidos lista = (lista !! indice): elegidos
-          where let indice = randomIndice lista
+
+--individuo me permite sacar un individuo de toda la lista para comprobar despues si lo puedo meter junto a los elegidos
+individuo :: [Objeto]->IO Objeto
+individuo lista = do 
+    indice <- randomIndice lista
+    let res = (lista !! indice)
+    return res
+
+--comenzar_elegidos pretende introducir el individuo escogido de la lista e introducirlo en la lista que devolveremos
+--debemos comenzar comprobando si puedo introducir el individuo en la bolsa o no
+--en caso de que si: introducirlo en la bolsa, quitarlo de la lista y actualizar el peso disponible
+--en caso de que no:quitarlo de la lista
+--caso base cuando la lista este vacia y devolveremos bolsa
+comenzar_elegidos::Int->[Objeto]->[Objeto]->IO [Objeto]
+comenzar_elegidos pesoMoch [] bolsa = do
+  return bolsa
+comenzar_elegidos pesoMoch lista bolsa = do
+  indi <- individuo lista
+  let listaAct = delete indi lista
+  let pesoIndi = sacar_peso' indi
+  --actualizar pesoSobrante
+  if cabe_objeto pesoMoch indi  then comenzar_elegidos (pesoMoch - pesoIndi) (indi:bolsa) listaAct
+    else comenzar_elegidos pesoMoch bolsa listaAct
+  return bolsa
+    
+
 
 
 
