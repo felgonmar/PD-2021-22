@@ -22,7 +22,7 @@ import SolEnfriamientoSim
 -- ===================================
 -- le pasaremos la lista de objetos de la compra
 vecinos :: Int->[Objeto] -> IO [Objeto]
-vecinos pesoMoch[] = error "lista vacia"
+vecinos pesoMoch [] = error "lista vacia al intentar crear vecinos"
 vecinos pesoMoch xs = do
   --la lista de vecinos vendra dada por vecinosAux
     let vecinoInicial = []
@@ -31,10 +31,11 @@ vecinos pesoMoch xs = do
     return xs
 
 --Pasaremos la lista de vecinos y la lista de objetos de compra, al final de la iteracion 
---el objeto seleccionado debe añadirse a vecinos y a fuera de objetos de compra
+--el objeto seleccionado debe añadirse a vecinos y sacarse de objetos de compra
 
 --individuo me permite sacar un individuo de toda la lista para comprobar despues si lo puedo meter junto a los elegidos
 individuo :: [Objeto]->IO Objeto
+individuo [] = error "lista vacia al sacar individuo"
 individuo lista = do 
     indice <- randomIndice lista
     let res = (lista !! indice)
@@ -49,12 +50,16 @@ comenzar_elegidos::Int->[Objeto]->[Objeto]->IO [Objeto]
 comenzar_elegidos pesoMoch [] bolsa = do
   return bolsa
 comenzar_elegidos pesoMoch lista bolsa = do
+  --sacamos un objeto random de la lista
   indi <- individuo lista
   let listaAct = delete indi lista
   let pesoIndi = sacar_peso' indi
   --actualizar pesoSobrante
-  if cabe_objeto pesoMoch indi  then comenzar_elegidos (pesoMoch - pesoIndi) (indi:bolsa) listaAct
-    else comenzar_elegidos pesoMoch bolsa listaAct
+  if cabe_objeto pesoMoch indi  
+    --llamada recursiva actualizando valores en caso de si
+    then comenzar_elegidos (pesoMoch - pesoIndi) listaAct (indi:bolsa)
+    --llamada recursiva actualizando la lista, quitando el objeto que no cabia y por tanto descartandolo sin tocar nuestra bolsa
+    else comenzar_elegidos pesoMoch listaAct bolsa 
   return bolsa
     
 
