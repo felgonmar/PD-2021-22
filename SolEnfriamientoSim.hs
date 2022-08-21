@@ -55,7 +55,6 @@ crear_obj lista= do
     let p = read peso :: Int
     let obj = [(v,p,nombre)]
     --OBJETO CONSEGUIDO
-    --HAY QUE METERLO EN UNA LISTA
     --PASAREMOS A LA SIGUIENTE ACCION CON EL OBJETO YA AÑADIDO A LA LISTA
     siguiente_accion (obj ++ lista)
     return ()
@@ -63,14 +62,19 @@ crear_obj lista= do
 siguiente_accion :: [Objeto]->IO()
 siguiente_accion lista = do
     let x = show lista
+    let valor_lista = show (funcion_valor lista)
+    a <- putStrLn ("Fuimos a comprar con " ++ x)
+    b <- putStrLn ("El valor total de nuestra lista seria: " ++ valor_lista)
     putStrLn " Seleccione entre las distintas opciones: "
     putStrLn "\t1. Crear objetos para la compra"
     putStrLn "\t2. Ir a comprar"
     putStrLn "\t3. Salir"
     putStrLn "Escriba el número asociado a la selección: "
+   
     o <- getLine
     case o of "1" -> crear_obj lista
-              "2" -> putStrLn ("Fuimos a comprar con " ++ x)
+              "2" -> putStrLn ("Fuimos a comprar con " ++ x ++"\nEl valor total de nuestra lista seria: " ++ valor_lista) 
+             -- "2" -> sequence [a,b]
               "3" -> return ()
               _ -> putStrLn "\nSeleccione un problema"
 
