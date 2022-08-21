@@ -12,6 +12,7 @@ funcionMoch = do
     let t = read temperatura :: Int
     let nEnf = read enfriamiento :: Int
     let nIte = read iteracion :: Int
+    --falta la llamada a la funcion principal con los valores de t, nEnf y nIte
     return ()
 
 funcionGenetico :: IO ()
