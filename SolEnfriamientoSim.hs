@@ -4,6 +4,7 @@ el problema de la mochila.
 -}
 
 
+
 module SolEnfriamientoSim
     (SolucionMoch,
      Objeto,
@@ -73,8 +74,8 @@ siguiente_accion lista = do
    
     o <- getLine
     case o of "1" -> crear_obj lista
-              "2" -> putStrLn ("Fuimos a comprar con " ++ x ++"\nEl valor total de nuestra lista seria: " ++ valor_lista) 
-             -- "2" -> sequence [a,b]
+              "2" -> putStrLn ("Fuimos a comprar con " ++ x 
+                                ++"\nEl valor total de nuestra lista seria: " ++ valor_lista) 
               "3" -> return ()
               _ -> putStrLn "\nSeleccione un problema"
 
@@ -108,8 +109,8 @@ caben_objetos pesoMoch lista
 
 cabe_objeto::Int->Objeto->Bool
 cabe_objeto pesoMoch objeto
-    |pesoMoch < sacar_peso' objeto = False
-    |pesoMoch > sacar_peso' objeto = True   
+    |pesoMoch < (sacar_peso' objeto) = False
+    |pesoMoch > (sacar_peso' objeto) = True   
     
 
 --parseList::[a,b,c]
