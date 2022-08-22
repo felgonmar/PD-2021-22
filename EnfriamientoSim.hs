@@ -47,28 +47,38 @@ enfriamiento_simulado::Double->Double->Double --tInicial, tFinal, coolingRate
                                             ->Int --Peso limite de la mochila
                                                   ->IO() --nuestra solucion la guardamos en un fichero, por tanto return()
 enfriamiento_simulado tInicial tFinal cRate nIter val lista solInicial pesoMoch  = do
-  if (tInicial < tFinal)
-    then do
+  if (tInicial > tFinal)
+    then 
       if (nIter /= 0)
         then do
           --la expresion <- me sirve para trabajar con datos no IO
-          let nIter=nIter - 1
+          
           vecino <- comenzar_elegidos pesoMoch lista [] 
+          print vecino
           let valorVecino = fromIntegral $ funcion_valor vecino
+          print valorVecino
           let delta = fromIntegral $ val - valorVecino 
           random<-randomNumber
-          if (delta < 0 ||prob_aceptacion delta tempInicial random)
+          if (delta < 0 || prob_aceptacion delta tempInicial random)
             then do
+              putStrLn "Se ha aceptado el valor y procedemos a actualizar"
                 --let val = valorVecino
                 --let solInicial = vecino
-                enfriamiento_simulado tInicial tFinal cRate nIter val lista solInicial pesoMochila
+              --PROBLEMA CON LA RECURSIVIDAD ME THINKS
+              enfriamiento_simulado tInicial tFinal cRate (nIter-1) valorVecino lista vecino pesoMochila
 
-            else enfriamiento_simulado tInicial tFinal cRate nIter val lista solInicial pesoMochila
+            else do
+              print "que pasa"
+              enfriamiento_simulado tInicial tFinal cRate nIter val lista solInicial pesoMochila
+              
        --en el siguiente else tenemos que hacer tInicial=tInicial*(1-cRAte)       
-        else do
-          let tInicial'=tInicial*(1-cRate)
-          enfriamiento_simulado tInicial' tFinal cRate nIteraciones val lista solInicial pesoMochila
-    else return ()
+      else do
+        let tInicial'=tInicial*(1-cRate)
+        enfriamiento_simulado tInicial' tFinal cRate nIteraciones val lista solInicial pesoMochila
+    else do
+    let sol = show solInicial
+    putStrLn ("LA SOLUCION ES: " ++ sol)
+    return ()
 -- ===================================
 --      FUNCIONES AUXILIARES
 -- ===================================
