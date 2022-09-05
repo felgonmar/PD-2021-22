@@ -86,6 +86,9 @@ funcion_valor:: [(Int,Int,String)]->Int
 funcion_valor [] = 0
 funcion_valor (x:xs) = (sacar_valor x) + funcion_valor xs
 
+funcion_valorFL ::[Objeto]-> Int
+funcion_valorFL xs = foldr (\x acc -> acc + (sacar_valor' x)  ) 0 xs
+
 --Para saber el valor de un objeto
 sacar_valor :: (a,b,c) -> a
 sacar_valor (x,_,_) = x 
@@ -103,14 +106,18 @@ caben_objetos::Int ->[Objeto]->Bool
 caben_objetos pesoMoch [] = False
 caben_objetos pesoMoch lista 
     | pesoMoch < pesoObjeto = caben_objetos pesoMoch (tail lista)
-    | pesoMoch > pesoObjeto = True
+    | pesoMoch >= pesoObjeto = True
     where pesoObjeto = sacar_peso' objeto
           objeto = head lista
 
 cabe_objeto::Int->Objeto->Bool
 cabe_objeto pesoMoch objeto
     |pesoMoch < (sacar_peso' objeto) = False
-    |pesoMoch > (sacar_peso' objeto) = True   
+    |pesoMoch >= (sacar_peso' objeto) = True   
+
+
+caben_objetosFL :: Int -> [Objeto]->Bool
+caben_objetosFL peso xs = foldr (\x acc -> if (sacar_peso' x)>peso then False else True ) False xs 
     
 
 --parseList::[a,b,c]
