@@ -5,17 +5,9 @@ el problema de la mochila.
 
 
 
-{--module SolEnfriamientoSim
-    (SolucionMoch,
-     Objeto,
-     funcion_valor,
-     sacar_valor,
-     sacar_valor',
-     sacar_peso,
-     sacar_peso',
-     caben_objetos,
-     cabe_objeto
-    ) where --}
+module SolEnfriamientoSim
+    (comienzo
+    ) where 
 import System.IO
 import EnfriamientoSim
 
@@ -93,7 +85,7 @@ siguiente_accion lista = do
     case o of "1" -> crear_obj lista
               "2" -> enfriamiento_simulado tempInicial tempFinal coolingRate nIteraciones valoracionInicial lista solmoch pesoMochila
               "3" -> return ()
-              _ -> putStrLn "\nSeleccione un problema"
+              _ -> siguiente_accion lista
 
 
 

@@ -1,4 +1,5 @@
 --Los valores de cada cosa se pediran por pantalla desde la clase aplicacion:
+import SolEnfriamientoSim
 funcionMoch :: IO ()
 funcionMoch = do
     putStrLn "\nFunción Mochila seleccionada"
@@ -31,7 +32,7 @@ main = do
     putStrLn "\t3 Salir"
     putStr "\nEscriba el número asociado a la selección: "
     o <- getLine
-    case o of "1" -> funcionMoch
+    case o of "1" -> comienzo
               "2" -> funcionGenetico
               "3" -> return ()
-              _ -> putStrLn "\nSeleccione un problema"
+              _ -> main
