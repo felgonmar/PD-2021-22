@@ -60,13 +60,11 @@ enfriamiento_simulado tInicial tFinal cRate nIter val lista solInicial pesoMoch 
           if (delta < 0 || prob_aceptacion delta tempInicial random)
             then do
               putStrLn "Se ha aceptado el valor y procedemos a actualizar"
-                --let val = valorVecino
-                --let solInicial = vecino
               --PROBLEMA CON LA RECURSIVIDAD ME THINKS
               enfriamiento_simulado tInicial tFinal cRate (nIter-1) valorVecino lista vecino pesoMochila
 
             else do
-              print "que pasa"
+             
               enfriamiento_simulado tInicial tFinal cRate nIter val lista solInicial pesoMochila
               
        --en el siguiente else tenemos que hacer tInicial=tInicial*(1-cRAte)       
