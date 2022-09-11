@@ -1,17 +1,42 @@
+module Genetico(
+  generaPoblacion,
+  muta,
+  solucion
+)where
 import System.Random
+import Data.List
 
--- tipo solucionesReinas será lo que valga la función fitness + el tablero 
-type SolucionReinas = (Double, Tablero)
 
+mutaciones = 9
 probabilidad = 0.8
--- el tablero constiturá de un array de arrays de double (porque lo necesitamos para random) donde si es 1, es la posición de la reina
-type Tablero = [[Double]]
 
 
-generaPoblacion :: Int -> IO [[Double]]
+generaPoblacion :: Int -> IO ()
 generaPoblacion n = do
     individuo <- generaIndividuo (n*n)
-    return (parteLista individuo n)
+    putStrLn ("gen: " ++ show ((parteLista individuo n)))
+    s <- solucion (parteLista individuo n)
+    putStrLn ("solucion: ")
+    print s
+    if(s > 0)
+      then do
+        putStrLn "NO ES SOLUCION. Empezando mutaciones: "
+        mutacion (parteLista individuo n)        
+    else 
+      do
+        putStrLn "SOLUCION CORRECTA"
+
+    return ()
+
+mutacion :: [[Double]] -> IO()
+mutacion xs = do
+    s <- solucion (muta xs)
+    putStrLn "MUTACION COMPLETA"
+    putStrLn "SOLUCION NUEVA: "
+    print s
+
+        
+    return ()
 
 generaIndividuo :: Int -> IO [Double]
 generaIndividuo n = do
@@ -36,17 +61,18 @@ mutaAux xs
   | (sum xs) == 1 =  xs 
   | otherwise = transforma (take (length xs) xs) 0.7
  
+-- Definicion de la funcion solucion, le pasamos transpose para comprobar los horizontales también
+solucion xs =
+  return (fitness xs (transpose xs))
 
-solucion :: Tablero -> SolucionReinas
-solucion xs = (fitness xs, xs)
+fitness :: [[Double]] ->  [[Double]] ->  Double
+fitness [] _ = 0 
+fitness (x:xs) (ts:tss) = fitness' x + fitness' ts +  fitness xs tss
 
-fitness :: [[Double]] -> Double
-fitness [] = 0
-fitness (x:xs) = fitness' x + fitness xs 
 
-fitness':: [Double] -> Double
+fitness':: [Double] ->  Double
 fitness' xs 
-    | r ==1 = r
+    | r ==1 = 0
     | otherwise = 928348939244.00
     where r = sum xs
--- si hay 2 en una fila, penaliza mucho, si hay coincidencia de reinas, no tanto  
+-- si hay 2 en una fila, penaliza   

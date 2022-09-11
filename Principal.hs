@@ -1,20 +1,7 @@
 --Los valores de cada cosa se pediran por pantalla desde la clase aplicacion:
 import SolEnfriamientoSim
-funcionMoch :: IO ()
-funcionMoch = do
-    putStrLn "\nFunción Mochila seleccionada"
-    putStr "\nIndique temperatura actual (se recomienda 1000): "
-    temperatura <- getLine
-    putStr "\nIndique número de enfriamientos: "
-    enfriamiento <- getLine
-    putStr "\nIndique número de iteraciones: "
-    iteracion <- getLine
-    putStrLn "\nEjecutando algoritmo..."
-    let t = read temperatura :: Int
-    let nEnf = read enfriamiento :: Int
-    let nIte = read iteracion :: Int
-    --falta la llamada a la funcion principal con los valores de t, nEnf y nIte
-    return ()
+import Genetico
+
 
 funcionGenetico :: IO ()
 funcionGenetico = do 
@@ -22,6 +9,8 @@ funcionGenetico = do
     putStrLn "\n indique el numero de reinas"
     reinas <- getLine
     let n = read reinas :: Int
+    generaPoblacion n
+
     return ()
 
 main :: IO ()
