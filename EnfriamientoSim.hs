@@ -1,22 +1,19 @@
 module EnfriamientoSim
-(
-
-)where
+  (enfriamiento_simulado,
+   funcion_valor,
+     sacar_valor,
+     sacar_valor',
+     sacar_peso,
+     sacar_peso',
+     caben_objetos,
+     cabe_objeto
+  )where
 import Data.List
 import System.Random
-import SolEnfriamientoSim
+--import SolEnfriamientoSim
 import Control.Monad
 import System.IO
---Funcion sorteo
---Funcion experimento
---Mejor es nuestra funcion fitness que compara los valores que le demos de entrada
---La funcion de aceptacion devolvera un bool que en el caso de que sea true actualizara los 
---  valores de valor_actual.
---Funcion aceptar_e_s (valor_candidata, valor_actual, Temper, mejor)
---  return (mejor(valor_candidata,valor actual)or
----               sorteo(math.exp(-abs(valor_candidata-valorActual)/Temper)))
 
---Funcion para descubrir una vecino a la solucion
 -- ===================================
 --      VARIABLES AUXILIARES
 -- ===================================
@@ -35,12 +32,13 @@ coolingRate::Temperatura
 coolingRate=0.1
 valoracionInicial::Int
 valoracionInicial= -1
+type Objeto = (Int,Int,String)
 
 
 -- ===================================
 --      FUNCIONES PRINCIPAL
 -- ===================================
-enfriamiento_simulado::Double->Double->Double --tInicial, tFinal, coolingRate
+enfriamiento_simulado::Temperatura->Temperatura->Temperatura --tInicial, tFinal, coolingRate
                         ->Int --nIter
                              ->Int --valoracionInicial 0
                                   ->[Objeto]->[Objeto] --poblacion inicial/lista de la compra/solucion inicial
@@ -129,4 +127,44 @@ prob_aceptacion delta temp random =  (op > random)
           delta' = 0 - delta 
           alt = ( delta' / temp) 
 
+--Sacar el valor total de nuestra solucion
+funcion_valor:: [(Int,Int,String)]->Int
+funcion_valor [] = 0
+funcion_valor (x:xs) = (sacar_valor x) + funcion_valor xs
+
+funcion_valorFL ::[Objeto]-> Int
+funcion_valorFL xs = foldr (\x acc -> acc + (sacar_valor' x)  ) 0 xs
+
+--Para saber el valor de un objeto
+sacar_valor :: (a,b,c) -> a
+sacar_valor (x,_,_) = x 
+sacar_valor' :: Objeto -> Int
+sacar_valor' (x,_,_) = x
+
+--Para saber el peso de un objeto
+sacar_peso :: (a,b,c) -> b
+sacar_peso (_,y,_) = y 
+sacar_peso' :: Objeto -> Int
+sacar_peso' (_,y,_) = y
+
+--Esta funcion sirve para detectar si aun cabe algun objeto de la bolsa
+caben_objetos::Int ->[Objeto]->Bool
+caben_objetos pesoMoch [] = False
+caben_objetos pesoMoch lista 
+    | pesoMoch < pesoObjeto = caben_objetos pesoMoch (tail lista)
+    | pesoMoch >= pesoObjeto = True
+    where pesoObjeto = sacar_peso' objeto
+          objeto = head lista
+
+cabe_objeto::Int->Objeto->Bool
+cabe_objeto pesoMoch objeto
+    |pesoMoch < (sacar_peso' objeto) = False
+    |pesoMoch >= (sacar_peso' objeto) = True   
+
+
+caben_objetosFL :: Int -> [Objeto]->Bool
+caben_objetosFL peso xs = foldr (\x acc -> if (sacar_peso' x)>peso then False else True ) False xs 
+    
+
+--parseList::[a,b,c]
 

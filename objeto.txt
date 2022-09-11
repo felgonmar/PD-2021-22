@@ -1,1 +1,4 @@
 (2,3,"prueba")
+
+putStrLn ("Fuimos a comprar con " ++ x 
+                                ++"\nEl valor total de nuestra lista seria: " ++ valor_lista) 

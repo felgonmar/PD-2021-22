@@ -5,7 +5,7 @@ el problema de la mochila.
 
 
 
-module SolEnfriamientoSim
+{--module SolEnfriamientoSim
     (SolucionMoch,
      Objeto,
      funcion_valor,
@@ -15,8 +15,9 @@ module SolEnfriamientoSim
      sacar_peso',
      caben_objetos,
      cabe_objeto
-    ) where
+    ) where --}
 import System.IO
+import EnfriamientoSim
 
 
 --Definimos nuestro tipo de solucion, que vendra dado por la optimizacion del valor total
@@ -24,7 +25,23 @@ type SolucionMoch = (Int, [Objeto])
 
 --Nuestro objetos vendran con los atributos (valor,peso,nombre) voy a dejarlo todo en INT para simplificarlo
 type Objeto = (Int,Int,String)
-data Lista =  Lista [Objeto] deriving (Show)
+
+pesoMochila::Int
+pesoMochila = 5
+solmoch::[Objeto]
+solmoch = []
+--En cada iteracion se generara el vecino 
+nIteraciones:: Int
+nIteraciones = 10
+type Temperatura = Double
+tempInicial::Temperatura
+tempInicial=100
+tempFinal::Temperatura
+tempFinal=1
+coolingRate::Temperatura
+coolingRate=0.1
+valoracionInicial::Int
+valoracionInicial= -1
 
 
 comienzo = do 
@@ -74,51 +91,10 @@ siguiente_accion lista = do
    
     o <- getLine
     case o of "1" -> crear_obj lista
-              "2" -> putStrLn ("Fuimos a comprar con " ++ x 
-                                ++"\nEl valor total de nuestra lista seria: " ++ valor_lista) 
+              "2" -> enfriamiento_simulado tempInicial tempFinal coolingRate nIteraciones valoracionInicial lista solmoch pesoMochila
               "3" -> return ()
               _ -> putStrLn "\nSeleccione un problema"
 
 
 
---Sacar el valor total de nuestra solucion
-funcion_valor:: [(Int,Int,String)]->Int
-funcion_valor [] = 0
-funcion_valor (x:xs) = (sacar_valor x) + funcion_valor xs
-
-funcion_valorFL ::[Objeto]-> Int
-funcion_valorFL xs = foldr (\x acc -> acc + (sacar_valor' x)  ) 0 xs
-
---Para saber el valor de un objeto
-sacar_valor :: (a,b,c) -> a
-sacar_valor (x,_,_) = x 
-sacar_valor' :: Objeto -> Int
-sacar_valor' (x,_,_) = x
-
---Para saber el peso de un objeto
-sacar_peso :: (a,b,c) -> b
-sacar_peso (_,y,_) = y 
-sacar_peso' :: Objeto -> Int
-sacar_peso' (_,y,_) = y
-
---Esta funcion sirve para detectar si aun cabe algun objeto de la bolsa
-caben_objetos::Int ->[Objeto]->Bool
-caben_objetos pesoMoch [] = False
-caben_objetos pesoMoch lista 
-    | pesoMoch < pesoObjeto = caben_objetos pesoMoch (tail lista)
-    | pesoMoch >= pesoObjeto = True
-    where pesoObjeto = sacar_peso' objeto
-          objeto = head lista
-
-cabe_objeto::Int->Objeto->Bool
-cabe_objeto pesoMoch objeto
-    |pesoMoch < (sacar_peso' objeto) = False
-    |pesoMoch >= (sacar_peso' objeto) = True   
-
-
-caben_objetosFL :: Int -> [Objeto]->Bool
-caben_objetosFL peso xs = foldr (\x acc -> if (sacar_peso' x)>peso then False else True ) False xs 
-    
-
---parseList::[a,b,c]
 
