@@ -1,7 +1,5 @@
 module Genetico(
   generaPoblacion,
-  muta,
-  solucion
 )where
 import System.Random
 import Data.List
@@ -10,7 +8,7 @@ import Data.List
 mutaciones = 9
 probabilidad = 0.8
 
-
+-- FUNCIONES PRINCIPALES
 generaPoblacion :: Int -> IO ()
 generaPoblacion n = do
     individuo <- generaIndividuo (n*n)
@@ -28,6 +26,9 @@ generaPoblacion n = do
 
     return ()
 
+
+
+-- Funcion si fallamos el primer gen
 mutacion :: [[Double]] -> IO()
 mutacion xs = do
     s <- solucion (muta xs)
@@ -38,6 +39,8 @@ mutacion xs = do
         
     return ()
 
+
+-- FUNCIONES AUXILIARES
 generaIndividuo :: Int -> IO [Double]
 generaIndividuo n = do
   gen <- newStdGen
