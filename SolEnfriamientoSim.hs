@@ -46,7 +46,7 @@ comienzo = do
     --esto nos permitira tener una buena actualizacion de la lista
     case o of "1" -> crear_obj []
               "2" -> return ()
-              _ -> putStrLn "\nSeleccione un problema"
+              _ -> comienzo
 
 
 --Cada vez que vengamos sera con una lista a la que le iremos añadiendo productos
